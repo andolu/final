@@ -1,0 +1,6 @@
+<h1>All Rides</h1>
+<ul class="list-unstyled">
+    <% for ride in @rides %>
+    <li><a href="/rides/<%= ride[:id] %>"><%= ride[:title]%></a></li>
+    <% end %>
+</ul>
