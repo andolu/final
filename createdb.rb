@@ -15,13 +15,17 @@ end
 DB.create_table! :rsvps do
   primary_key :id
   foreign_key :ride_id
+  foreign_key :user_id
   Boolean :going
-  String :name
-  String :email
   String :comments, text: true
 end
+DB.create_table! :users do
+   primary_key :id
+   String :name
+   String :email
+   String :password
+end 
 
-# Insert initial (seed) data
 rides_table = DB.from(:rides)
 
 rides_table.insert(title: "Fabulous Farmer's Market", 
