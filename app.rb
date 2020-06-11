@@ -15,24 +15,6 @@ before { puts; puts "--------------- NEW REQUEST ---------------"; puts }       
 after { puts; }                                                                       #
 #######################################################################################
 
-# read your API credentials from environment variables
-account_sid = ENV["TWILIO_ACCOUNT_SID"]
-auth_token = ENV["TWILIO_AUTH_TOKEN"]
-
-# set up a client to talk to the Twilio REST API
-client = Twilio::REST::Client.new(account_sid, auth_token)
-
-# send the SMS from your trial Twilio number to your verified non-Twilio number
-client.messages.create(
- from: "+14085479060", 
- to: "+16782006623",
- body: "Hey KIEI-451!"
-)
-
-results = Geocoder.search("200 S Rand Rd, Lake Zurich, IL 60047")
-@lat_long = results.first.coordinates.join("42.1953,88.1080")
-
-
 rides_table = DB.from(:rides)
 rsvps_table = DB.from(:rsvps)
 users_table = DB.from(:users)
@@ -40,7 +22,6 @@ users_table = DB.from(:users)
 before do
     @current_user = users_table.where(:id => session[:user_id]).to_a[0]
     puts @current_user.inspect
-    # Hi
 end
 
 get "/" do
@@ -50,8 +31,11 @@ get "/" do
 end
 
 get "/rides/:id" do
+  
     @users_table = users_table
     @ride = rides_table.where(:id => params["id"]).to_a[0]
+    results = Geocoder.search(@ride[:location])
+    @lat_long = results.first.coordinates.join(",")
     @rsvps = rsvps_table.where(:ride_id => params["id"]).to_a
     @count = rsvps_table.where(:ride_id => params["id"], :going => true).count
     view "ride"
@@ -81,7 +65,16 @@ post "/users/create" do
     users_table.insert(:name => params["name"],
                        :email => params["email"],
                        :password => BCrypt::Password.create(params["password"]))
-    view "create_user"
+    
+    account_sid = ENV["TWILIO_ACCOUNT_SID"]
+auth_token = ENV["TWILIO_AUTH_TOKEN"]
+client = Twilio::REST::Client.new(account_sid, auth_token)
+client.messages.create(
+ from: "+14085479060", 
+ to: "+16782006623",
+ body: "Thank you for signing Up!"
+)
+view "create_user"
 end
 
 get "/logins/new" do

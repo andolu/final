@@ -36,4 +36,4 @@ rides_table.insert(title: "Fabulous Farmer's Market",
 rides_table.insert(title: "Local Library Visit", 
                     description: "If books are your best friends, you will love a trip to the library.",
                     date: "June 14",
-                    location: "Ela Library")
+                    location: "Ela Area Public Library")
