@@ -60,9 +60,9 @@ client = Twilio::REST::Client.new(account_sid, auth_token)
 client.messages.create(
  from: "+14085479060", 
  to: "+16782006623",
- body: "Thank you for choosing a ride!"
-)               
-    view "create_rsvp"
+ body: "Thank you for your response!"
+)
+       view "create_rsvp"
 end
 
 get "/users/new" do
