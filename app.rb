@@ -53,7 +53,15 @@ get "/rides/:id/rsvps/create" do
                        :going => params["going"],
                        :user_id => @current_user[:id],
                        :comments => params["comments"])
-       @ride = rides_table.where(:id => params["id"]).to_a[0]                  
+       @ride = rides_table.where(:id => params["id"]).to_a[0]   
+account_sid = ENV["TWILIO_ACCOUNT_SID"]
+auth_token = ENV["TWILIO_AUTH_TOKEN"]
+client = Twilio::REST::Client.new(account_sid, auth_token)
+client.messages.create(
+ from: "+14085479060", 
+ to: "+16782006623",
+ body: "Thank you for choosing a ride!"
+)               
     view "create_rsvp"
 end
 
@@ -66,7 +74,7 @@ post "/users/create" do
                        :email => params["email"],
                        :password => BCrypt::Password.create(params["password"]))
     
-    account_sid = ENV["TWILIO_ACCOUNT_SID"]
+account_sid = ENV["TWILIO_ACCOUNT_SID"]
 auth_token = ENV["TWILIO_AUTH_TOKEN"]
 client = Twilio::REST::Client.new(account_sid, auth_token)
 client.messages.create(
