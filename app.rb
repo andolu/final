@@ -15,24 +15,6 @@ before { puts; puts "--------------- NEW REQUEST ---------------"; puts }       
 after { puts; }                                                                       #
 #######################################################################################
 
-# read your API credentials from environment variables
-account_sid = ENV["TWILIO_ACCOUNT_SID"]
-auth_token = ENV["TWILIO_AUTH_TOKEN"]
-
-# set up a client to talk to the Twilio REST API
-client = Twilio::REST::Client.new(account_sid, auth_token)
-
-# send the SMS from your trial Twilio number to your verified non-Twilio number
-client.messages.create(
- from: "+14085479060", 
- to: "+16782006623",
- body: "Hey KIEI-451!"
-)
-
-results = Geocoder.search("200 S Rand Rd, Lake Zurich, IL 60047")
-@lat_long = results.first.coordinates.join("42.1953,88.1080")
-
-
 rides_table = DB.from(:rides)
 rsvps_table = DB.from(:rsvps)
 users_table = DB.from(:users)
